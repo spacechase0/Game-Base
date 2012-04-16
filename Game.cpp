@@ -48,8 +48,6 @@ void Game::run()
 	isRunning = true;
 	while ( isRunning )
 	{
-	    Debug::draw(window);
-
 		std::shared_ptr< Scene > scene;
 		if ( currentScene != nextScene )
 		{
