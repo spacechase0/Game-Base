@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // Game Base
-// Copyright (C) 2012 Chase Warrington (staff@spacechase0.com)
+// Copyright (C) 2013 Chase Warrington (staff@spacechase0.com)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -22,22 +22,24 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef GAMEBASE_HPP
+#define GAMEBASE_HPP
 
 #include <map>
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#include "SceneChangeEvent.h"
+#include "ResourceManager.hpp"
+#include "SceneChangeEvent.hpp"
 
 class Scene;
 
-class Game
+// Sub-class it and override initialize() to add scenes, and maybe window.setTitle( "YOUR_GAME" )
+class GameBase : public ResourceManager
 {
 	public:
-		Game();
+		GameBase( unsigned int theUpdateRate, unsigned int theRenderRate );
 		
 		void run();
 		void close();
@@ -45,22 +47,28 @@ class Game
 		void changeScenes( const std::string& name, SceneChangeEvent event = SceneChangeEvent() );
 		std::shared_ptr< Scene > getScene( const std::string& name );
 		
-		static const int UPDATE_RATE;
-		static const int RENDER_RATE;
+		unsigned int getUpdateRate() const;
+		unsigned int getRenderRate() const;
+	
+	protected:
+		sf::RenderWindow window;
+		
+		virtual void initialize();
+		virtual void terminate();
+		
+		void addScene( const std::string& name, std::shared_ptr< Scene > scene );
 	
 	private:
-		sf::RenderWindow window;
+		const unsigned int updateRate;
+		const unsigned int renderRate;
 		bool isRunning;
-		
-		void initialize();
-		void terminate();
 		
 		std::map< std::string, std::shared_ptr< Scene > > scenes;
 		std::string currentScene;
 		std::string nextScene;
 		SceneChangeEvent changeEvent;
-		
-		void addScene( const std::string& name, std::shared_ptr< Scene > scene );
 };
 
-#endif // GAME_H
+#include "Game.hpp"
+
+#endif // GAMEBASE_HPP

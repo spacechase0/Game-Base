@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // Game Base
-// Copyright (C) 2012 Chase Warrington (staff@spacechase0.com)
+// Copyright (C) 2013 Chase Warrington (staff@spacechase0.com)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -22,8 +22,8 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef RESOURCEMANAGER_H
-#define RESOURCEMANAGER_H
+#ifndef RESOURCEMANAGER_HPP
+#define RESOURCEMANAGER_HPP
 
 #include <map>
 #include <memory>
@@ -40,29 +40,27 @@ namespace sf
 class ResourceManager
 {
 	public:
-		static bool loadTexture( const std::string& filename );
-		static bool loadSoundBuffer( const std::string& filename );
-		static bool loadFont( const std::string& filename );
+		bool loadTexture( const std::string& filename );
+		bool loadSoundBuffer( const std::string& filename );
+		bool loadFont( const std::string& filename );
 		
-		static std::shared_ptr< sf::Texture > getTexture( const std::string& filename, bool loadIfNotLoaded = true );
-		static std::shared_ptr< sf::SoundBuffer > getSoundBuffer( const std::string& filename, bool loadIfNotLoaded = true );
-		static std::shared_ptr< sf::Font > getFont( const std::string& filename, bool loadIfNotLoaded = true );
+		std::shared_ptr< sf::Texture > getTexture( const std::string& filename, bool loadIfNotLoaded = true );
+		std::shared_ptr< sf::SoundBuffer > getSoundBuffer( const std::string& filename, bool loadIfNotLoaded = true );
+		std::shared_ptr< sf::Font > getFont( const std::string& filename, bool loadIfNotLoaded = true );
 		
-		static void unloadTexture( const std::string& filename );
-		static void unloadSoundBuffer( const std::string& filename );
-		static void unloadFont( const std::string& filename );
-		static void unloadAll();
+		void unloadTexture( const std::string& filename );
+		void unloadSoundBuffer( const std::string& filename );
+		void unloadFont( const std::string& filename );
+		void unloadAll();
 	
 	private:
-		~ResourceManager() = delete;
+		sf::Mutex texMutex;
+		sf::Mutex soundMutex;
+		sf::Mutex fontMutex;
 		
-		static sf::Mutex texMutex;
-		static sf::Mutex soundMutex;
-		static sf::Mutex fontMutex;
-		
-		static std::map< std::string, std::shared_ptr< sf::Texture > > textures;
-		static std::map< std::string, std::shared_ptr< sf::SoundBuffer > > soundBuffers;
-		static std::map< std::string, std::shared_ptr< sf::Font > > fonts;
+		std::map< std::string, std::shared_ptr< sf::Texture > > textures;
+		std::map< std::string, std::shared_ptr< sf::SoundBuffer > > soundBuffers;
+		std::map< std::string, std::shared_ptr< sf::Font > > fonts;
 };
 
-#endif // RESOURCEMANAGER_H
+#endif // RESOURCEMANAGER_HPP

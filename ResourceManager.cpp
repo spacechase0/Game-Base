@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // Game Base
-// Copyright (C) 2012 Chase Warrington (staff@spacechase0.com)
+// Copyright (C) 2013 Chase Warrington (staff@spacechase0.com)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -22,7 +22,7 @@
 //
 ////////////////////////////////////////////////////////////
 
-#include "ResourceManager.h"
+#include "ResourceManager.hpp"
 
 #include <iostream>
 #include <SFML/Audio/SoundBuffer.hpp>
@@ -96,6 +96,7 @@ namespace
 	}
 }
 
+/*
 sf::Mutex ResourceManager::texMutex;
 sf::Mutex ResourceManager::soundMutex;
 sf::Mutex ResourceManager::fontMutex;
@@ -103,6 +104,7 @@ sf::Mutex ResourceManager::fontMutex;
 std::map< std::string, std::shared_ptr< sf::Texture > > ResourceManager::textures;
 std::map< std::string, std::shared_ptr< sf::SoundBuffer > > ResourceManager::soundBuffers;
 std::map< std::string, std::shared_ptr< sf::Font > > ResourceManager::fonts;
+*/
 
 bool ResourceManager::loadTexture( const std::string& filename )
 {
