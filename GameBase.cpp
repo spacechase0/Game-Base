@@ -124,6 +124,16 @@ unsigned int GameBase::getRenderRate() const
 	return renderRate;
 }
 
+sf::RenderWindow& GameBase::getWindow()
+{
+	return window;
+}
+
+const sf::RenderWindow& GameBase::getWindow() const
+{
+	return window;
+}
+
 void GameBase::initialize()
 {
 	window.create( sf::VideoMode( 640, 480 ), "Game" );

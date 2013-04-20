@@ -49,6 +49,9 @@ class GameBase : public ResourceManager
 		
 		unsigned int getUpdateRate() const;
 		unsigned int getRenderRate() const;
+		
+		sf::RenderWindow& getWindow();
+		const sf::RenderWindow& getWindow() const;
 	
 	protected:
 		sf::RenderWindow window;
