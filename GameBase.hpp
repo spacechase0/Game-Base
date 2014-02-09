@@ -22,8 +22,11 @@ class GameBase : public ResourceManager
 		void close();
 		
 		template< class SCENE, typename... PARAMS >
-		typename std::enable_if< std::is_base_of< Scene, typename SCENE >::value, void >::type
-		void changeScenes( PARAMS&... params );
+		typename std::enable_if< std::is_base_of< Scene, SCENE >::value, void >::type
+		changeScenes( PARAMS&... params );
+		template< class SCENE, typename... PARAMS >
+		typename std::enable_if< std::is_base_of< Scene, SCENE >::value, void >::type
+		changeScenes( SceneChangeEvent& event, PARAMS&... params );
 		
 		unsigned int getUpdateRate() const;
 		unsigned int getRenderRate() const;
@@ -46,18 +49,8 @@ class GameBase : public ResourceManager
 		
 		std::shared_ptr< Scene > currentScene; // I'd use unique, but then moving from next -> current would be an issue
 		std::shared_ptr< Scene > nextScene;
-		SceneChangeEvent changeEvent;
 };
 
-// TODO: Move to an inl
-template< class SCENE, typename... PARAMS >
-typename std::enable_if< std::is_base_of< Scene, typename SCENE >::value, void >::type
-void GameBase::changeScenes( PARAMS&... params )
-{
-	// Should I use std::forward? I don't know
-	nextScene.reset( new SCENE( ( * this ), params... ) );
-}
-
-#include "Game.hpp"
+#include "GameBase.inl"
 
 #endif // GAMEBASE_HPP

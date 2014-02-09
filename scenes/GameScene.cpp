@@ -1,6 +1,6 @@
 #include "scenes/GameScene.hpp"
 
-GameScene::GameScene( Game& theGame )
+GameScene::GameScene( Game& theGame, SceneChangeEvent& event )
    : Scene::Scene( theGame )
 {
 }

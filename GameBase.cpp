@@ -61,23 +61,6 @@ void GameBase::close()
 	isRunning = false;
 }
 
-void GameBase::changeScenes( const std::string& name, SceneChangeEvent event )
-{
-	nextScene = name;
-	changeEvent = event;
-}
-
-std::shared_ptr< Scene > GameBase::getScene( const std::string& name )
-{
-	if ( scenes.find( name ) == scenes.end() )
-	{
-		std::cout << "Failed to find scene '" << name << "'." << std::endl;
-		return std::shared_ptr< Scene >();
-	}
-
-	return scenes.find( name )->second;
-}
-
 unsigned int GameBase::getUpdateRate() const
 {
 	return updateRate;
@@ -102,17 +85,8 @@ void GameBase::initialize()
 {
 	window.create( sf::VideoMode( 640, 480 ), "Game" );
 	window.setFramerateLimit( renderRate );
-
-	//addScene( "Game", std::shared_ptr< Scene >( new GameBaseScene( * this ) ) );
-
-	//changeScenes( "Game", SceneChangeEvent() );
 }
 
 void GameBase::terminate()
 {
-}
-
-void GameBase::addScene( const std::string& name, std::shared_ptr< Scene > scene )
-{
-	scenes.insert( std::make_pair( name, scene ) );
 }
