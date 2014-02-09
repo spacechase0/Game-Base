@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // Game Base
-// Copyright (C) 2013 Chase Warrington (staff@spacechase0.com)
+// Copyright (C) 2014 Chase Warrington (staff@spacechase0.com)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -21,26 +21,4 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 ////////////////////////////////////////////////////////////
-
-#ifndef SCENECHANGEEVENT_HPP
-#define SCENECHANGEEVENT_HPP
-
-class SceneChangeEvent
-{
-	public:
-		// The license (copied from SFML :P) says altered versions much be marked...
-		// Does a comment saying "anything other than Reason::Unspecified is altered" work?
-		enum Reason : int
-		{
-			Unspecified = 0,
-			// ...
-		};
-		
-		SceneChangeEvent();
-		SceneChangeEvent( Reason theReason );
-		
-		Reason reason;
-		// And anything below here would be modified
-};
-
-#endif // SCENECHANGEEVENT_HPP
+^ Excludes GameScene.h/cpp. Those are just examples.

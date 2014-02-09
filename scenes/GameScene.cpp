@@ -5,14 +5,6 @@ GameScene::GameScene( Game& theGame )
 {
 }
 
-void GameScene::initialize( SceneChangeEvent& event )
-{
-}
-
-void GameScene::terminate()
-{
-}
-
 void GameScene::update()
 {
 }
