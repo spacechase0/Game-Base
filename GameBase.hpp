@@ -17,6 +17,7 @@ class GameBase : public ResourceManager
 {
 	public:
 		GameBase( unsigned int theUpdateRate, unsigned int theRenderRate );
+		virtual ~GameBase();
 		
 		void run();
 		void close();

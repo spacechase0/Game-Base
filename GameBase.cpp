@@ -12,6 +12,10 @@ GameBase::GameBase( unsigned int theUpdateRate, unsigned int theRenderRate )
 {
 }
 
+GameBase::~GameBase()
+{
+}
+
 void GameBase::run()
 {
 	initialize();

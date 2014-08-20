@@ -1,5 +1,7 @@
 #include "scenes/GameScene.hpp"
 
+#include <SFML/Graphics/RectangleShape.hpp>
+
 GameScene::GameScene( Game& theGame, SceneChangeEvent& event )
    : Scene::Scene( theGame )
 {

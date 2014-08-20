@@ -5,6 +5,12 @@
 Game::Game()
    : GameBase::GameBase( 50, 50 )
 {
+	options.load( "config.ini" );
+}
+
+Game::~Game()
+{
+	options.save( "config.ini" );
 }
 
 void Game::initialize()
