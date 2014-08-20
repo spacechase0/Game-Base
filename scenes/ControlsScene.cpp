@@ -14,7 +14,7 @@ namespace
 	{
 		switch ( input.type )
 		{
-			case InputBinding::Keyboard: return "Key " + util::toString( input.key );
+			case InputBinding::Keyboard: return "Key " + keyToString( input.key );
 			case InputBinding::MouseButton:
 				switch ( input.mouseButton )
 				{
