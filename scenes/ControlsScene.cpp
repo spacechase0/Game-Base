@@ -112,39 +112,71 @@ ControlsScene::ControlsScene( Game& theGame, SceneChangeEvent& event )
 
 void ControlsScene::update()
 {
+	if ( changing and newControlEvents.size() > 0 )
+	{
+		for ( std::size_t i = 0; i < newControlEvents.size(); ++i )
+		{
+			sf::Event event = newControlEvents[ i ];
+			if ( event.type == sf::Event::MouseButtonPressed )
+			{
+				( * changing->first ) = InputBinding( event.mouseButton.button );
+			}
+			else if ( event.type == sf::Event::KeyPressed )
+			{
+				( * changing->first ) = InputBinding( event.key.code );
+			}
+			else if ( event.type == sf::Event::JoystickMoved )
+			{
+				( * changing->first ) = InputBinding( event.joystickMove.joystickId, event.joystickMove.axis, static_cast< int >( event.joystickMove.position / std::abs( event.joystickMove.position ) ) );
+			}
+			else if ( event.type == sf::Event::JoystickButtonPressed )
+			{
+				( * changing->first ) = InputBinding( event.joystickButton.joystickId, event.joystickButton.button );
+			}
+		}
+		std::size_t index = 0;
+		if ( sf::Keyboard::isKeyPressed( sf::Keyboard::LShift ) or sf::Keyboard::isKeyPressed( sf::Keyboard::RShift ) ) ++index;
+		if ( sf::Keyboard::isKeyPressed( sf::Keyboard::LControl ) or sf::Keyboard::isKeyPressed( sf::Keyboard::RControl ) ) ++index;
+		if ( index < newControlEvents.size() )
+		{
+			sf::Event event = newControlEvents[ index ];
+			if ( event.type == sf::Event::MouseButtonPressed )
+			{
+				( * changing->first ) = InputBinding( event.mouseButton.button );
+			}
+			else if ( event.type == sf::Event::KeyPressed )
+			{
+				( * changing->first ) = InputBinding( event.key.code );
+			}
+			else if ( event.type == sf::Event::JoystickMoved )
+			{
+				( * changing->first ) = InputBinding( event.joystickMove.joystickId, event.joystickMove.axis, static_cast< int >( event.joystickMove.position / std::abs( event.joystickMove.position ) ) );
+			}
+			else if ( event.type == sf::Event::JoystickButtonPressed )
+			{
+				( * changing->first ) = InputBinding( event.joystickButton.joystickId, event.joystickButton.button );
+			}
+		
+			updateControls();
+			changing = NULL;
+		}
+		newControlEvents.clear();
+	}
 }
 
 void ControlsScene::update( const sf::Event& event )
 {
 	if ( changing )
 	{
-		if ( event.type == sf::Event::MouseButtonPressed )
+		if ( event.type == sf::Event::MouseButtonPressed    or event.type == sf::Event::KeyPressed or 
+		     event.type == sf::Event::JoystickButtonPressed or event.type == sf::Event::JoystickMoved )
 		{
-			( * changing->first ) = InputBinding( event.mouseButton.button );
-			updateControls();
-			changing = NULL;
-			return;
-		}
-		else if ( event.type == sf::Event::KeyPressed )
-		{
-			( * changing->first ) = InputBinding( event.key.code );
-			updateControls();
-			changing = NULL;
-			return;
-		}
-		else if ( event.type == sf::Event::JoystickMoved )
-		{
-			if ( event.joystickMove.position == 0 || std::abs( event.joystickMove.position ) < 50 ) return;
-			( * changing->first ) = InputBinding( event.joystickMove.joystickId, event.joystickMove.axis, static_cast< int >( event.joystickMove.position / std::abs( event.joystickMove.position ) ) );
-			updateControls();
-			changing = NULL;
-			return;
-		}
-		else if ( event.type == sf::Event::JoystickButtonPressed )
-		{
-			( * changing->first ) = InputBinding( event.joystickButton.joystickId, event.joystickButton.button );
-			updateControls();
-			changing = NULL;
+			if ( event.type == sf::Event::JoystickMoved and ( event.joystickMove.position == 0 or std::abs( event.joystickMove.position ) < 50 ) )
+			{
+				return;
+			}
+			
+			newControlEvents.push_back( event );
 			return;
 		}
 	}

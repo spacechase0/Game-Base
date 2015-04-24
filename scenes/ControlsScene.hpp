@@ -34,6 +34,7 @@ class ControlsScene : public Scene
 		std::vector< InputPage > controls;
 		void updateControls();
 		
+		std::vector< sf::Event > newControlEvents;
 		std::pair< InputBinding* const, InputText >* changing = NULL;
 		sf::Clock changeTimer;
 		sf::RectangleShape changeDialogBack;
