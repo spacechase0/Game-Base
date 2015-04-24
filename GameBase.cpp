@@ -1,6 +1,6 @@
 #include "GameBase.hpp"
 
-#include <iostream>
+#include <SFML/Window/Event.hpp>
 
 #include "Scene.hpp"
 //#include "scenes/GameBaseScene.hpp"
@@ -10,10 +10,12 @@ GameBase::GameBase( unsigned int theUpdateRate, unsigned int theRenderRate )
      renderRate( theRenderRate ),
      isRunning( false )
 {
+	options.load( "config.ini" );
 }
 
 GameBase::~GameBase()
 {
+	options.save( "config.ini" );
 }
 
 void GameBase::run()
@@ -31,8 +33,10 @@ void GameBase::run()
 		{
 			currentScene = nextScene;
 			nextScene.reset();
+			window.setView( sf::View( sf::FloatRect( 0, 0, window.getSize().x, window.getSize().y ) ) );
 		}
-
+		
+		options.updateInput();
 		while ( updateBuffer >= DELTA )
 		{
 			sf::Event event;

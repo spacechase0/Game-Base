@@ -5,18 +5,15 @@
 Game::Game()
    : GameBase::GameBase( 50, 50 )
 {
-	options.load( "config.ini" );
 }
 
 Game::~Game()
 {
-	options.save( "config.ini" );
 }
 
 void Game::initialize()
 {
 	GameBase::initialize();
-	//window.setTitle( "Game" );
 
 	changeScenes< MainMenuScene >();
 }

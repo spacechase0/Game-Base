@@ -124,7 +124,7 @@ std::string keyToString( sf::Keyboard::Key key )
 		key( F15 );
 		key( Pause );
 		#undef key
+		
+		default: return "???";
 	}
-	
-	return "???";
 }

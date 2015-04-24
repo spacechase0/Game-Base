@@ -1,6 +1,7 @@
 #include "scenes/ControlsScene.hpp"
 
 #include <SFML/Audio/Listener.hpp>
+#include <SFML/Window/Event.hpp>
 #include <util/String.hpp>
 
 #include "Game.hpp"
@@ -14,22 +15,21 @@ namespace
 	{
 		switch ( input.type )
 		{
-			case InputBinding::Keyboard: return "Key " + keyToString( input.key );
+			case InputBinding::Keyboard: return "'" + keyToString( input.key ) + "' Key";
 			case InputBinding::MouseButton:
 				switch ( input.mouseButton )
 				{
 					case sf::Mouse::Left: return "Left Mouse Button";
 					case sf::Mouse::Right: return "Right Mouse Button";
 					case sf::Mouse::Middle: return "Middle Mouse Button";
-					case sf::Mouse::XButton1: return "Extra Mouse Button 1";
-					case sf::Mouse::XButton2: return "Extra Mouse Button 2";
+					case sf::Mouse::XButton1: return "Extra (1) Mouse Button";
+					case sf::Mouse::XButton2: return "Extra (2) Mouse Button";
 					default: return "??? Mouse Button";
 				}
 				
 			case InputBinding::JoystickAxis:
 				{
-					std::string data = "Joystick " + util::toString( input.joystickAxis.id ) + ", ";
-					data += ( input.joystickAxis.dir > 0 ) ? "+" : "-";
+					std::string data = ( input.joystickAxis.dir > 0 ) ? "+" : "-";
 					switch ( input.joystickAxis.axis )
 					{
 						#define jb(a) case sf::Joystick::  a : data += #a; break;
@@ -43,11 +43,11 @@ namespace
 						jb( PovY );
 						#undef jb
 					}
-					data += " Axis";
+					data += " Axis on Joy " + util::toString( input.joystickAxis.id );
 					return data;
 				}
 				
-			case InputBinding::JoystickButton: return "Joystick " + util::toString( input.joystickButton.id ) + ", Button " + util::toString( input.joystickButton.button );
+			case InputBinding::JoystickButton: return "Button " + util::toString( input.joystickButton.button ) + " on Joy " + util::toString( input.joystickButton.id );
 		}
 		
 		return "???";
@@ -56,7 +56,7 @@ namespace
 
 ControlsScene::ControlsScene( Game& theGame, SceneChangeEvent& event )
    : Scene::Scene( theGame ),
-     font( * theGame.getFont( "res/dejavu/ttf/DejaVuSans.ttf" ) )
+     font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) )
 {
 	title.setString( "Controls" );
 	title.setFont( font );
@@ -197,18 +197,20 @@ void ControlsScene::updateControls()
 	controls.clear();
 	
 	int y = 100;
-	for ( auto it = game.options.controls.begin(); it != game.options.controls.end(); ++it )
+	std::vector< std::string > controlList = game.options.getControlList();
+	for ( auto it = controlList.begin(); it != controlList.end(); ++it )
 	{
-		InputBinding& input = it->second;
+		InputBinding& input = game.options.getInputBinding( * it );
 		
 		InputText display;
 		display.title = back;
-		display.title.setString( it->first );
+		display.title.setString( * it );
 		display.title.setPosition( 25, y );
 		
 		display.text = display.title;
 		display.text.setString( stringify( input ) );
-		display.text.move( 150, 0 );
+		display.text.setPosition( game.getWindow().getSize().x - 25, display.text.getPosition().y );
+		display.text.setOrigin( display.text.getGlobalBounds().width, 0 );
 		
 		controls.insert( std::make_pair( &input, display ) );
 		

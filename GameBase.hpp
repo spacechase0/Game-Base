@@ -3,10 +3,11 @@
 
 #include <map>
 #include <memory>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <string>
 #include <type_traits>
 
+#include "Options.hpp"
 #include "ResourceManager.hpp"
 #include "SceneChangeEvent.hpp"
 
@@ -34,6 +35,8 @@ class GameBase : public ResourceManager
 		
 		sf::RenderWindow& getWindow();
 		const sf::RenderWindow& getWindow() const;
+		
+		Options options;
 	
 	protected:
 		sf::RenderWindow window;

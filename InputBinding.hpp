@@ -43,10 +43,24 @@ struct InputBinding
 			JoystickButtonData joystickButton;
 		};
 		
-		bool check() const;
+		bool isActive() const;
+		bool wasActive() const;
+		inline bool justActive() { return isActive() and !wasActive(); }
+		
+		float getState() const;
+		float getLastState() const;
 		
 		std::string write() const;
 		static InputBinding read( const std::string& str );
+	
+	private:
+		float state;
+		float prevState;
+		
+		friend class Options;
+		void update();
+		
+		float check() const;
 };
 
 #endif // INPUTBINDING_HPP

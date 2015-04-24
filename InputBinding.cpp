@@ -6,64 +6,54 @@
 
 InputBinding::InputBinding( sf::Keyboard::Key theKey )
    : type( Keyboard ),
-     key( theKey )
+     key( theKey ),
+     state( 0 ),
+     prevState( 0 )
 {
 }
 
 InputBinding::InputBinding( sf::Mouse::Button theMouseButton )
    : type( MouseButton ),
-     mouseButton( theMouseButton )
+     mouseButton( theMouseButton ),
+     state( 0 ),
+     prevState( 0 )
 {
 }
 
 InputBinding::InputBinding( int joystickId, sf::Joystick::Axis axis, int dir )
    : type( JoystickAxis ),
-     joystickAxis{ joystickId, axis, dir }
+     joystickAxis{ joystickId, axis, dir },
+     state( 0 ),
+     prevState( 0 )
 {
 }
 
 InputBinding::InputBinding( int joystickId, int button )
    : type( JoystickButton ),
-     joystickButton{ joystickId, button }
+     joystickButton{ joystickId, button },
+     state( 0 ),
+     prevState( 0 )
 {
 }
 
-bool InputBinding::check() const
+bool InputBinding::isActive() const
 {
-	switch ( type )
-	{
-		case Keyboard:
-			return sf::Keyboard::isKeyPressed( key );
-			
-		case MouseButton:
-			return sf::Mouse::isButtonPressed( mouseButton );
-		
-		case JoystickAxis:
-			{
-				if ( !sf::Joystick::isConnected( joystickAxis.id ) )
-				{
-					return false;
-				}
-				
-				float value = sf::Joystick::getAxisPosition( joystickAxis.id, joystickAxis.axis );
-					 if ( joystickAxis.dir < 0 ) return value < 0;
-				else if ( joystickAxis.dir > 0 ) return value > 0;
-				
-				return false;
-			}
-		
-		case JoystickButton:
-			{
-				if ( !sf::Joystick::isConnected( joystickAxis.id ) )
-				{
-					return false;
-				}
-				
-				return sf::Joystick::isButtonPressed( joystickButton.id, joystickButton.button );
-			}
-	}
-	
-	return false;
+	return state > 0;
+}
+
+bool InputBinding::wasActive() const
+{
+	return prevState > 0;
+}
+
+float InputBinding::getState() const
+{
+	return state;
+}
+
+float InputBinding::getLastState() const
+{
+	return prevState;
 }
 
 std::string InputBinding::write() const
@@ -119,4 +109,48 @@ InputBinding InputBinding::read( const std::string& str )
 	
 	// This should never happen... right?
 	return InputBinding( sf::Keyboard::Unknown );
+}
+
+void InputBinding::update()
+{
+	prevState = state;
+	state = check();
+}
+
+float InputBinding::check() const
+{
+	switch ( type )
+	{
+		case Keyboard:
+			return sf::Keyboard::isKeyPressed( key ) ? 1 : 0;
+			
+		case MouseButton:
+			return sf::Mouse::isButtonPressed( mouseButton ) ? 1 : 0;
+		
+		case JoystickAxis:
+			{
+				if ( !sf::Joystick::isConnected( joystickAxis.id ) )
+				{
+					return 0;
+				}
+				
+				float value = sf::Joystick::getAxisPosition( joystickAxis.id, joystickAxis.axis );
+					 if ( joystickAxis.dir < 0 ) return -value / 100;
+				else if ( joystickAxis.dir > 0 ) return value / 100;
+				
+				return 0;
+			}
+		
+		case JoystickButton:
+			{
+				if ( !sf::Joystick::isConnected( joystickAxis.id ) )
+				{
+					return 0;
+				}
+				
+				return sf::Joystick::isButtonPressed( joystickButton.id, joystickButton.button ) ? 1 : 0;
+			}
+	}
+	
+	return 0;
 }

@@ -1,6 +1,7 @@
 #include "scenes/OptionsScene.hpp"
 
 #include <SFML/Audio/Listener.hpp>
+#include <SFML/Window/Event.hpp>
 
 #include "Game.hpp"
 #include "scenes/MainMenuScene.hpp"
@@ -9,7 +10,7 @@
 
 OptionsScene::OptionsScene( Game& theGame, SceneChangeEvent& event )
    : Scene::Scene( theGame ),
-     font( * theGame.getFont( "res/dejavu/ttf/DejaVuSans.ttf" ) )
+     font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) )
 {
 	title.setString( "Options" );
 	title.setFont( font );
@@ -22,9 +23,10 @@ OptionsScene::OptionsScene( Game& theGame, SceneChangeEvent& event )
 	volume.setCharacterSize( 30 );
 	volume.setPosition( 50, 125 );
 	
-	volumeSliderBg.setSize( sf::Vector2f( 350, 10 ) );
+	float width = game.getWindow().getSize().x - ( 50 * 3 ) - volume.getGlobalBounds().width;
+	volumeSliderBg.setSize( sf::Vector2f( width, 10 ) );
 	volumeSliderBg.setFillColor( sf::Color::White );
-	volumeSliderBg.setPosition( 200, volume.getPosition().y + 14 );
+	volumeSliderBg.setPosition( volume.getGlobalBounds().width + ( 50 * 2 ), volume.getPosition().y + 14 );
 	
 	volumeSliderFg.setSize( sf::Vector2f( 5, 30 ) );
 	volumeSliderFg.setFillColor( sf::Color( 128, 128, 128 ) );
@@ -38,11 +40,12 @@ OptionsScene::OptionsScene( Game& theGame, SceneChangeEvent& event )
 	
 	defaults = volume;
 	defaults.setString( "Defaults" );
-	defaults.setPosition( 100, game.getWindow().getSize().y - defaults.getLocalBounds().height - 25 );
+	defaults.setPosition( 50, game.getWindow().getSize().y - defaults.getLocalBounds().height - 25 );
 	
 	back = defaults;
 	back.setString( "Back" );
-	back.setPosition( 450, defaults.getPosition().y );
+	back.setPosition( game.getWindow().getSize().x - 50, defaults.getPosition().y );
+	back.setOrigin( back.getGlobalBounds().width, 0 );
 }
 
 void OptionsScene::update()

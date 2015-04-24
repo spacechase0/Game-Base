@@ -1,5 +1,7 @@
 #include "scenes/MainMenuScene.hpp"
 
+#include <SFML/Window/Event.hpp>
+
 #include "Game.hpp"
 #include "scenes/GameScene.hpp"
 #include "scenes/OptionsScene.hpp"
@@ -7,7 +9,7 @@
 
 MainMenuScene::MainMenuScene( Game& theGame, SceneChangeEvent& event )
    : Scene::Scene( theGame ),
-     font( * theGame.getFont( "res/dejavu/ttf/DejaVuSans.ttf" ) )
+     font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) )
 {
 	title.setString( "Game" );
 	title.setFont( font );
