@@ -1,7 +1,6 @@
 #ifndef OPTIONS_HPP
 #define OPTIONS_HPP
 
-#include <map>
 #include <vector>
 
 #include "InputBinding.hpp"
@@ -21,7 +20,7 @@ class Options
 		void updateInput();
 	
 	private:
-		std::map< std::string, InputBinding > controls;
+		std::vector< std::pair< std::string, InputBinding > > controls;
 };
 
 #endif // OPTIONS_HPP

@@ -56,7 +56,8 @@ namespace
 
 ControlsScene::ControlsScene( Game& theGame, SceneChangeEvent& event )
    : Scene::Scene( theGame ),
-     font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) )
+     font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) ),
+     currPage( 0 )
 {
 	title.setString( "Controls" );
 	title.setFont( font );
@@ -67,8 +68,25 @@ ControlsScene::ControlsScene( Game& theGame, SceneChangeEvent& event )
 	back = title;
 	back.setString( "Back" );
 	back.setCharacterSize( 30 );
-	back.setPosition( ( game.getWindow().getSize().x - back.getLocalBounds().width ) / 2,
-	                  game.getWindow().getSize().y - back.getLocalBounds().height - 25 );
+	back.setPosition( 25, game.getWindow().getSize().y - back.getLocalBounds().height - 25 );
+	
+	pageRight = title;
+	pageRight.setCharacterSize( 30 );
+	pageRight.setString( ">" );
+	pageRight.setOrigin( pageRight.getGlobalBounds().width, 0 );
+	pageRight.setPosition( game.getWindow().getSize().x - 25, game.getWindow().getSize().y - pageRight.getLocalBounds().height - 25 );
+	
+	page = pageRight;
+	page.setString( "1/1" );
+	page.move( -pageRight.getGlobalBounds().width - 15, 0 );
+	
+	pageLeft = page;
+	pageLeft.setString( "<" );
+	pageLeft.setOrigin( pageLeft.getGlobalBounds().width, 0 );
+	pageLeft.move( -page.getGlobalBounds().width - 15, 0 );
+	
+	page.move( -page.getGlobalBounds().width / 2, 0 );
+	page.setOrigin( page.getGlobalBounds().width / 2, 0 );
 	
 	updateControls();
 	
@@ -139,9 +157,23 @@ void ControlsScene::update( const sf::Event& event )
 			{
 				game.changeScenes< OptionsScene >();
 			}
+			else if ( pageLeft.getGlobalBounds().contains( event.mouseButton.x, event.mouseButton.y ) )
+			{
+				if ( currPage > 0 )
+				{
+					--currPage;
+				}
+			}
+			else if ( pageRight.getGlobalBounds().contains( event.mouseButton.x, event.mouseButton.y ) )
+			{
+				if ( currPage < controls.size() - 1 )
+				{
+					++currPage;
+				}
+			}
 			else
 			{
-				for ( auto it = controls.begin(); it != controls.end(); ++it )
+				for ( auto it = controls[ currPage ].begin(); it != controls[ currPage ].end(); ++it )
 				{
 					if ( it->second.text.getGlobalBounds().contains( event.mouseButton.x, event.mouseButton.y ) )
 					{
@@ -164,13 +196,21 @@ void ControlsScene::render( sf::RenderWindow& window )
 	handleHighlight( window, back );
 	window.draw( back );
 	
-	for ( auto it = controls.begin(); it != controls.end(); ++it )
+	for ( auto it = controls[ currPage ].begin(); it != controls[ currPage ].end(); ++it )
 	{
 		window.draw( it->second.title );
 		
 		handleHighlight( window, it->second.text );
 		window.draw( it->second.text );
 	}
+	
+	handleHighlight( window, pageLeft );
+	handleHighlight( window, pageRight );
+	page.setString( util::toString( currPage + 1 ) + "/" + util::toString( controls.size() ) );
+	page.setOrigin( page.getGlobalBounds().width / 2, 0 );
+	window.draw( pageLeft );
+	window.draw( page );
+	window.draw( pageRight );
 	
 	if ( changing )
 	{
@@ -198,6 +238,7 @@ void ControlsScene::updateControls()
 	
 	int y = 100;
 	std::vector< std::string > controlList = game.options.getControlList();
+	InputPage currPage;
 	for ( auto it = controlList.begin(); it != controlList.end(); ++it )
 	{
 		InputBinding& input = game.options.getInputBinding( * it );
@@ -212,8 +253,20 @@ void ControlsScene::updateControls()
 		display.text.setPosition( game.getWindow().getSize().x - 25, display.text.getPosition().y );
 		display.text.setOrigin( display.text.getGlobalBounds().width, 0 );
 		
-		controls.insert( std::make_pair( &input, display ) );
+		currPage.push_back( std::make_pair( &input, display ) );
 		
 		y += 35;
+		
+		if ( y + 35 > back.getPosition().y )
+		{
+			controls.push_back( currPage );
+			currPage.clear();
+			y = 100;
+		}
+	}
+	
+	if ( currPage.size() > 0 )
+	{
+		controls.push_back( currPage );
 	}
 }

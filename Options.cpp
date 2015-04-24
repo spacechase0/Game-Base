@@ -6,8 +6,8 @@
 
 Options::Options()
 {
-	// Add controls here. Such as:
-	// controls.insert( std::make_pair( "Up", InputBinding( sf::Keyboard::W ) ) );
+	// Add controls here, such as:
+	// controls.push_back( std::make_pair( "Up", InputBinding( sf::Keyboard::W ) ) );
 }
 
 void Options::save( const std::string& filename )
@@ -40,24 +40,28 @@ void Options::load( const std::string& filename )
 
 const InputBinding& Options::getInputBinding( const std::string& str ) const
 {
-	auto it = controls.find( str );
-	if ( it == controls.end() )
+	for ( auto it = controls.begin(); it != controls.end(); ++it )
 	{
-		throw std::invalid_argument( "'" + str + "' is not an existing control." );
+		if ( it->first == str )
+		{
+			return it->second;
+		}
 	}
 	
-	return it->second;
+	throw std::invalid_argument( "'" + str + "' is not an existing control." );
 }
 
 InputBinding& Options::getInputBinding( const std::string& str )
 {
-	auto it = controls.find( str );
-	if ( it == controls.end() )
+	for ( auto it = controls.begin(); it != controls.end(); ++it )
 	{
-		throw std::invalid_argument( "'" + str + "' is not an existing control." );
+		if ( it->first == str )
+		{
+			return it->second;
+		}
 	}
 	
-	return it->second;
+	throw std::invalid_argument( "'" + str + "' is not an existing control." );
 }
 
 std::vector< std::string > Options::getControlList() const

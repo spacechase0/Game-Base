@@ -5,6 +5,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Clock.hpp>
+#include <vector>
 
 #include "Scene.hpp"
 
@@ -28,7 +29,9 @@ class ControlsScene : public Scene
 			sf::Text title;
 			sf::Text text;
 		};
-		std::map< InputBinding*, InputText > controls;
+		std::size_t currPage;
+		typedef std::vector< std::pair< InputBinding* const, InputText > > InputPage;
+		std::vector< InputPage > controls;
 		void updateControls();
 		
 		std::pair< InputBinding* const, InputText >* changing = NULL;
@@ -40,6 +43,9 @@ class ControlsScene : public Scene
 		sf::Text changeDialogTimer;
 		
 		sf::Text back;
+		sf::Text pageLeft;
+		sf::Text page;
+		sf::Text pageRight;
 };
 
 #endif // CONTROLSSCENE_HPP
