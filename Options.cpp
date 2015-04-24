@@ -34,6 +34,7 @@ void Options::load( const std::string& filename )
 	sf::Listener::setGlobalVolume( util::fromString< float >( config[ "General" ][ "Volume" ] ) );
 	for ( auto it = controls.begin(); it != controls.end(); ++it )
 	{
+		if ( config[ "Controls" ].find( it->first ) == config[ "Controls" ].end() ) continue;
 		it->second = InputBinding::read( config[ "Controls" ][ it->first ] );
 	}
 }
