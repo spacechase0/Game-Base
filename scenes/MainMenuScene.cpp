@@ -7,7 +7,7 @@
 #include "scenes/OptionsScene.hpp"
 #include "Utility.hpp"
 
-MainMenuScene::MainMenuScene( Game& theGame, SceneChangeEvent& event )
+MainMenuScene::MainMenuScene( Game& theGame, const SceneChangeEvent& event )
    : Scene::Scene( theGame ),
      font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) )
 {

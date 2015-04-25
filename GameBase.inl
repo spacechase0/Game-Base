@@ -2,7 +2,7 @@ class Game;
 
 template< class SCENE, typename... PARAMS >
 typename std::enable_if< std::is_base_of< Scene, SCENE >::value, void >::type
-GameBase::changeScenes( PARAMS&... params )
+GameBase::changeScenes( const PARAMS&... params )
 {
 	// Should I use std::forward? I don't know
 	SceneChangeEvent tmp;
@@ -11,7 +11,7 @@ GameBase::changeScenes( PARAMS&... params )
 
 template< class SCENE, typename... PARAMS >
 typename std::enable_if< std::is_base_of< Scene, SCENE >::value, void >::type
-GameBase::changeScenes( SceneChangeEvent& event, PARAMS&... params )
+GameBase::changeScenes( const SceneChangeEvent& event, const PARAMS&... params )
 {
 	// Should I use std::forward? I don't know
 	nextScene.reset( new SCENE( dynamic_cast< Game& >( * this ), event, params... ) );

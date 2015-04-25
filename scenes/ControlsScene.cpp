@@ -54,7 +54,7 @@ namespace
 	}
 }
 
-ControlsScene::ControlsScene( Game& theGame, SceneChangeEvent& event )
+ControlsScene::ControlsScene( Game& theGame, const SceneChangeEvent& event )
    : Scene::Scene( theGame ),
      font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) ),
      currPage( 0 )

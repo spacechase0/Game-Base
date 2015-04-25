@@ -9,7 +9,7 @@
 class OptionsScene : public Scene
 {
 	public:
-		OptionsScene( Game& theGame, SceneChangeEvent& event );
+		OptionsScene( Game& theGame, const SceneChangeEvent& event );
 		
 		virtual void update();
 		virtual void update( const sf::Event& event );

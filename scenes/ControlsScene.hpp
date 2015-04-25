@@ -14,7 +14,7 @@ class InputBinding;
 class ControlsScene : public Scene
 {
 	public:
-		ControlsScene( Game& theGame, SceneChangeEvent& event );
+		ControlsScene( Game& theGame, const SceneChangeEvent& event );
 		
 		virtual void update();
 		virtual void update( const sf::Event& event );

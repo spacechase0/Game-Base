@@ -6,7 +6,7 @@
 class GameScene : public Scene
 {
 	public:
-		GameScene( Game& theGame, SceneChangeEvent& event );
+		GameScene( Game& theGame, const SceneChangeEvent& event );
 		
 		virtual void update();
 		virtual void update( const sf::Event& event );

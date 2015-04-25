@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
-GameScene::GameScene( Game& theGame, SceneChangeEvent& event )
+GameScene::GameScene( Game& theGame, const SceneChangeEvent& event )
    : Scene::Scene( theGame )
 {
 }

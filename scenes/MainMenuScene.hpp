@@ -8,7 +8,7 @@
 class MainMenuScene : public Scene
 {
 	public:
-		MainMenuScene( Game& theGame, SceneChangeEvent& event );
+		MainMenuScene( Game& theGame, const SceneChangeEvent& event );
 		
 		virtual void update();
 		virtual void update( const sf::Event& event );

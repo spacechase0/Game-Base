@@ -25,10 +25,10 @@ class GameBase : public ResourceManager
 		
 		template< class SCENE, typename... PARAMS >
 		typename std::enable_if< std::is_base_of< Scene, SCENE >::value, void >::type
-		changeScenes( PARAMS&... params );
+		changeScenes( const PARAMS&... params );
 		template< class SCENE, typename... PARAMS >
 		typename std::enable_if< std::is_base_of< Scene, SCENE >::value, void >::type
-		changeScenes( SceneChangeEvent& event, PARAMS&... params );
+		changeScenes( const SceneChangeEvent& event, const PARAMS&... params );
 		
 		unsigned int getUpdateRate() const;
 		unsigned int getRenderRate() const;
