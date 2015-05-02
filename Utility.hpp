@@ -13,4 +13,6 @@ namespace sf
 void handleHighlight( const sf::Window& window, sf::Text& text );
 std::string keyToString( sf::Keyboard::Key key );
 
+std::string getWritablePathFor( const std::string& file );
+
 #endif // UTILITY_HPP

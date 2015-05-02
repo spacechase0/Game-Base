@@ -11,6 +11,7 @@
 #include "ResourceManager.hpp"
 #include "SceneChangeEvent.hpp"
 
+class Game;
 class Scene;
 
 // Sub-class it and override initialize() to add scenes, and maybe window.setTitle( "YOUR_GAME" )

@@ -2,20 +2,21 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include "Game.hpp"
 #include "Scene.hpp"
-//#include "scenes/GameBaseScene.hpp"
+#include "Utility.hpp"
 
 GameBase::GameBase( unsigned int theUpdateRate, unsigned int theRenderRate )
    : updateRate( theUpdateRate ),
      renderRate( theRenderRate ),
      isRunning( false )
 {
-	options.load( "config.ini" );
+	options.load( getWritablePathFor( "config.ini" ) );
 }
 
 GameBase::~GameBase()
 {
-	options.save( "config.ini" );
+	options.save( getWritablePathFor( "config.ini" ) );
 }
 
 void GameBase::run()
@@ -37,19 +38,24 @@ void GameBase::run()
 		}
 		
 		options.updateInput();
+		sf::Event event;
+		while ( window.pollEvent( event ) )
+		{
+			if ( event.type == sf::Event::Closed )
+			{
+				close();
+			}
+			#ifdef SFML_SYSTEM_IOS
+			else if ( event.type == sf::Event::LostFocus )
+			{
+				options.save( getWritablePathFor( "config.ini" ) );
+			}
+			#endif
+
+			currentScene->update( event );
+		}
 		while ( updateBuffer >= DELTA )
 		{
-			sf::Event event;
-			while ( window.pollEvent( event ) )
-			{
-				if ( event.type == sf::Event::Closed )
-				{
-					close();
-				}
-
-				currentScene->update( event );
-			}
-
 			currentScene->update();
 
 			updateBuffer -= DELTA;
@@ -97,4 +103,9 @@ void GameBase::initialize()
 
 void GameBase::terminate()
 {
+}
+
+Game* GameBase::getGame()
+{
+	return dynamic_cast< Game* >( this );
 }

@@ -1,5 +1,6 @@
 #include "scenes/ControlsScene.hpp"
 
+#include <cmath>
 #include <SFML/Audio/Listener.hpp>
 #include <SFML/Window/Event.hpp>
 #include <util/String.hpp>

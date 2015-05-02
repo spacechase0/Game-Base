@@ -128,3 +128,10 @@ std::string keyToString( sf::Keyboard::Key key )
 		default: return "???";
 	}
 }
+
+#ifndef SFML_SYSTEM_IOS
+std::string getWritablePathFor( const std::string& file )
+{
+	return file;
+}
+#endif
