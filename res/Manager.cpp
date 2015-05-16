@@ -45,4 +45,21 @@ namespace res
 			load( it->first );
 		}
 	}
+	
+	void Manager::unloadUnused()
+	{
+		std::vector< decltype( resources )::iterator > unload;
+		for ( auto it = resources.begin(); it != resources.end(); ++it )
+		{
+			if ( it->second->refs == 0 )
+			{
+				unload.push_back( it );
+			}
+		}
+		
+		for ( auto it = unload.begin(); it != unload.end(); ++it )
+		{
+			resources.erase( * it );
+		}
+	}
 }

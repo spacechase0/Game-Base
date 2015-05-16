@@ -22,6 +22,7 @@ namespace res
 			Reference load( const std::string& filename );
 			
 			void reload();
+			void unloadUnused();
 			
 			mutable util::Logger log;
 		
