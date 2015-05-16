@@ -7,6 +7,7 @@
 
 #include "Game.hpp"
 #include "InputBinding.hpp"
+#include "res/Types.hpp"
 #include "scenes/OptionsScene.hpp"
 #include "Utility.hpp"
 
@@ -57,9 +58,11 @@ namespace
 
 ControlsScene::ControlsScene( Game& theGame, const SceneChangeEvent& event )
    : Scene::Scene( theGame ),
-     font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) ),
+     fontRes( theGame.get( "res/ken_fonts/kenpixel.ttf" ) ),
      currPage( 0 )
 {
+	const sf::Font& font = res::font( fontRes );
+	
 	title.setString( "Controls" );
 	title.setFont( font );
 	title.setCharacterSize( 45 );

@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "res/Reference.hpp"
 #include "Scene.hpp"
 
 class OptionsScene : public Scene
@@ -16,7 +17,7 @@ class OptionsScene : public Scene
 		virtual void render( sf::RenderWindow& window );
 	
 	private:
-		const sf::Font& font;
+		res::Reference fontRes;
 		sf::Text title;
 		
 		sf::Text volume;

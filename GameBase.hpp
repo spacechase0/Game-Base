@@ -8,14 +8,14 @@
 #include <type_traits>
 
 #include "Options.hpp"
-#include "ResourceManager.hpp"
+#include "res/Manager.hpp"
 #include "SceneChangeEvent.hpp"
 
 class Game;
 class Scene;
 
 // Sub-class it and override initialize() to add scenes, and maybe window.setTitle( "YOUR_GAME" )
-class GameBase : public ResourceManager
+class GameBase : public res::Manager
 {
 	public:
 		GameBase( unsigned int theUpdateRate, unsigned int theRenderRate );
@@ -54,6 +54,8 @@ class GameBase : public ResourceManager
 		
 		std::shared_ptr< Scene > currentScene; // I'd use unique, but then moving from next -> current would be an issue
 		std::shared_ptr< Scene > nextScene;
+		
+		Game* getGame();
 };
 
 #include "GameBase.inl"

@@ -7,6 +7,7 @@
 #include <SFML/System/Clock.hpp>
 #include <vector>
 
+#include "res/Reference.hpp"
 #include "Scene.hpp"
 
 class InputBinding;
@@ -21,7 +22,7 @@ class ControlsScene : public Scene
 		virtual void render( sf::RenderWindow& window );
 	
 	private:
-		const sf::Font& font;
+		res::Reference fontRes;
 		sf::Text title;
 		
 		struct InputText

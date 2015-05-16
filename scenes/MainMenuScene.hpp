@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/Text.hpp>
 
+#include "res/Reference.hpp"
 #include "Scene.hpp"
 
 class MainMenuScene : public Scene
@@ -15,7 +16,7 @@ class MainMenuScene : public Scene
 		virtual void render( sf::RenderWindow& window );
 	
 	private:
-		const sf::Font& font;
+		res::Reference fontRes;
 		sf::Text title;
 		sf::Text play;
 		sf::Text options;

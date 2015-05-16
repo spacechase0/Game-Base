@@ -4,14 +4,17 @@
 #include <SFML/Window/Event.hpp>
 
 #include "Game.hpp"
+#include "res/Types.hpp"
 #include "scenes/MainMenuScene.hpp"
 #include "scenes/ControlsScene.hpp"
 #include "Utility.hpp"
 
 OptionsScene::OptionsScene( Game& theGame, const SceneChangeEvent& event )
    : Scene::Scene( theGame ),
-     font( * theGame.getFont( "res/ken_fonts/kenpixel.ttf" ) )
+     fontRes( theGame.get( "res/ken_fonts/kenpixel.ttf" ) )
 {
+	const sf::Font& font = res::font( fontRes );
+	
 	title.setString( "Options" );
 	title.setFont( font );
 	title.setCharacterSize( 45 );
